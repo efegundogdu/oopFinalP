@@ -1,6 +1,6 @@
 package oopFinalP;
 
-public abstract class Question {
+public abstract class Question implements Gradable {
 
     protected String text;
     protected int points;
