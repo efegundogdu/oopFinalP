@@ -1,135 +1,65 @@
 package oopFinalP;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-//interface
-interface Gradable {
-    int checkAnswer(String answer);
-}
-
-//abstract class
-abstract class Question implements Gradable {
-
-    protected String text;
-    protected int points;
-
-    public Question(String text, int points) {
-        this.text = text;
-        this.points = points;
-    }
-
-    public void showQuestion() {
-        System.out.println(text);
-    }
-}
-
-//multiple class
-class MultipleChoiceQuestion extends Question {
-
-    private String correctAnswer;
-
-    public MultipleChoiceQuestion(String text, int points, String correctAnswer) {
-        super(text, points);
-        this.correctAnswer = correctAnswer;
-    }
-
-    @Override
-    public int checkAnswer(String answer) {
-        if (answer.equalsIgnoreCase(correctAnswer)) {
-            return points;
-        }
-        return 0;
-    }
-}
-
-//true false
-class TrueFalseQuestion extends Question {
-
-    private boolean correct;
-
-    public TrueFalseQuestion(String text, int points, boolean correct) {
-        super(text, points);
-        this.correct = correct;
-    }
-
-    @Override
-    public int checkAnswer(String answer) {
-        boolean userAnswer = Boolean.parseBoolean(answer);
-        return userAnswer == correct ? points : 0;
-    }
-}
-
-//students
-class Student {
-
-    private String name;
-    private int score;
-
-    public Student(String name) {
-        this.name = name;
-        this.score = 0;
-    }
-
-    public void addScore(int points) {
-        score += points;
-    }
-
-    public void showResult() {
-        System.out.println(name + " total score: " + score);
-    }
-}
-
-//quiz
-class Quiz {
-
-    private ArrayList<Question> questions = new ArrayList<>();
-
-    public void addQuestion(Question q) {
-        questions.add(q);
-    }
-
-    public void start(Student student) {
-        Scanner sc = new Scanner(System.in);
-
-        for (Question q : questions) {
-            q.showQuestion();
-            System.out.print("Answer: ");
-            String answer = sc.nextLine();
-
-            int gained = q.checkAnswer(answer); // polymorphism
-            student.addScore(gained);
-        }
-    }
-}
-
-//main
 public class mainC {
 
     public static void main(String[] args) {
 
-        Student student = new Student("Mefe");
+        Scanner sc = new Scanner(System.in);
+        UserManager userManager = new UserManager();
 
+        // Giris
+        System.out.print("Username: ");
+        String u = sc.nextLine();
+
+        System.out.print("Password: ");
+        String p = sc.nextLine();
+
+        if (!userManager.login(u, p)) {
+            System.out.println("Giris basarisiz!");
+            sc.close();
+            return;
+        }
+
+        System.out.println("Giris basarili!");
+
+        // QUIZ
         Quiz quiz = new Quiz();
 
-        quiz.addQuestion(
-            new MultipleChoiceQuestion(
-                "Creatine sac doker mi? (A) Evet (B) Hayir",
-                10,
-                "A"
-            )
-        );
+        // KOLAY SORULAR
+        quiz.addQuestion(new MultipleChoiceQuestion(
+                "What does RAM stand for?\nA) Random Access Memory\nB) Read Access Memory\nC) Run All Memory\nD) Rapid Access Module",
+                10, "A", Difficulty.EASY));
 
-        quiz.addQuestion(
-            new TrueFalseQuestion(
-                "Lol eglenceli oyundur. (true / false)",
-                10,
-                false
-            )
-        );
+        quiz.addQuestion(new MultipleChoiceQuestion(
+                "Which symbol is used for logical AND?\nA) ||\nB) &&\nC) !\nD) ==",
+                10, "B", Difficulty.EASY));
 
-        quiz.start(student);
+        quiz.addQuestion(new TrueFalseQuestion(
+                "A stack follows the LIFO principle.",
+                10, true, Difficulty.EASY));
 
-        student.showResult();
+        // ORTA SORULAR
+        quiz.addQuestion(new MultipleChoiceQuestion(
+                "What is the time complexity of binary search?\nA) O(n)\nB) O(log n)\nC) O(n²)\nD) O(1)",
+                20, "B", Difficulty.MEDIUM));
+
+        quiz.addQuestion(new TrueFalseQuestion(
+                "Big-O notation describes the efficiency of an algorithm.",
+                20, true, Difficulty.MEDIUM));
+
+        // ZOR SORULAR
+        quiz.addQuestion(new MultipleChoiceQuestion(
+                "Which data structure is best for implementing recursion?\nA) Queue\nB) Heap\nC) Stack\nD) Linked List",
+                30, "C", Difficulty.HARD));
+
+        quiz.addQuestion(new TrueFalseQuestion(
+                "A compiler translates the entire program before execution.",
+                30, true, Difficulty.HARD));
+
+        quiz.start();
+
+        sc.close();
     }
 }

@@ -1,0 +1,9 @@
+MC,What does RAM stand for?,A,Random Access Memory,Read Access Memory,Run All Memory,Rapid Access Module,10,EASY
+MC,Which symbol is used for logical AND?,B,||,&&,!,==,10,EASY
+TF,A stack follows the LIFO principle,true,10,EASY
+
+MC,What is the time complexity of binary search?,B,O(n),O(log n),O(n²),O(1),20,MEDIUM
+TF,Big-O notation describes the efficiency of an algorithm.,true,20,MEDIUM
+
+MC,Which data structure is best for implementing recursion?,C,Queue,Heap,Stack,Linked List,30,HARD
+TF,A compiler translates the entire program before execution.,true,30,HARD
